@@ -53,7 +53,7 @@
 
         public static bool IsInside(Position pos)
         {
-            return pos.row >= 0 && pos.row < 8 && pos.col >= 0  && pos.col < 8;
+            return pos.row >= 0 && pos.row < 8 && pos.col >= 0 && pos.col < 8;
         }
 
         public bool IsEmpty(Position pos)
