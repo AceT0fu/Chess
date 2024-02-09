@@ -68,21 +68,29 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+
             Point point = e.GetPosition(BoardGrid);
             Position pos = ToSquarePosition(point);
 
-            if (selectedPos == null)
+            if (gameState.IsGameOver())
             {
-                NoSelectedPieceClick(pos);
+                /* Toggle showing game over menu by clicking */ 
+                if (IsMenuOnScreen()) 
+                    MenuContainer.Content = null;
+                else 
+                    ShowGameOver();
             } else
             {
-                HasSelectedPieceClick(pos);
+                if (selectedPos == null)
+                    NoSelectedPieceClick(pos);
+                else
+                    HasSelectedPieceClick(pos);
             }
         }
 
         private void NoSelectedPieceClick(Position pos)
         {
-            IEnumerable<Move> moves = gameState.LegalMovesForPiece(pos);
+            IEnumerable<Move> moves = gameState.GetLegalMoves(pos);
             if (moves.Any())
             {
                 selectedPos = pos;
@@ -95,28 +103,24 @@ namespace ChessUI
         {
             /* click on a valid move */
             if (moveCache.Keys.Contains(pos))
-            {
                 HandleMove(moveCache[pos]);
-            }
 
             ClearHighlights();
-            moveCache.Clear();
 
             /* click on another piece that belongs to you */
             if (!gameState.board.IsEmpty(pos) && pos != selectedPos && gameState.board[pos].colour == gameState.turn)
-            {
-                NoSelectedPieceClick(pos);
-            /* click the same piece or nothing to cancel */
-            } else
-            {
+                NoSelectedPieceClick(pos); 
+            else
                 selectedPos = null;
-            }
         }
 
         private void HandleMove(Move move)
         {
             gameState.MakeMove(move);
             DrawBoard(gameState.board);
+
+            if (gameState.IsGameOver())
+                ShowGameOver();
         }
 
         private Position ToSquarePosition(Point point)
@@ -132,9 +136,7 @@ namespace ChessUI
         {
             moveCache.Clear();
             foreach (Move move in moves)
-            {
                 moveCache[move.toPos] = move;
-            }
         }
 
         private void ShowHighlights()
@@ -145,21 +147,49 @@ namespace ChessUI
             foreach (Position to in moveCache.Keys)
             {
                 if (gameState.board.IsEmpty(to))
-                {
-                    highlights[7 - to.row, to.col].Fill = new SolidColorBrush(green);
-                } else
-                {
+                    highlights[7 - to.row, to.col].Fill = new SolidColorBrush(green); 
+                else
                     highlights[7 - to.row, to.col].Fill = new SolidColorBrush(red);
-                }
             }
         }
 
         private void ClearHighlights()
         {
             foreach (Position to in moveCache.Keys)
-            {
                 highlights[7 - to.row, to.col].Fill = Brushes.Transparent;
-            }
+
+            moveCache.Clear();
+        }
+
+        private bool IsMenuOnScreen()
+        {
+            return MenuContainer.Content != null;
+        }
+
+        private void ShowGameOver()
+        {
+            GameOverMenu gameOverMenu = new GameOverMenu(gameState);
+            MenuContainer.Content = gameOverMenu;
+
+            gameOverMenu.optionSelected += option =>
+            {
+                if (option == Option.Restart)
+                {
+                    MenuContainer.Content = null;
+                    RestartGame();
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
+            };
+        }
+
+        private void RestartGame()
+        {
+            ClearHighlights();
+            gameState = new GameState(Player.White, Board.Initial());
+            DrawBoard(gameState.board);
         }
     }
 }

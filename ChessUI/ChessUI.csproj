@@ -10,7 +10,11 @@
   <ItemGroup>
     <None Remove="Assets\BishopB.png" />
     <None Remove="Assets\BishopW.png" />
+    <None Remove="Assets\Board.jpg" />
     <None Remove="Assets\Board.png" />
+    <None Remove="Assets\Board1.png" />
+    <None Remove="Assets\Board2.jpg" />
+    <None Remove="Assets\Board3.jpg" />
     <None Remove="Assets\Icon.png" />
     <None Remove="Assets\KingB.png" />
     <None Remove="Assets\KingW.png" />
@@ -31,7 +35,11 @@
   <ItemGroup>
     <Resource Include="Assets\BishopB.png" />
     <Resource Include="Assets\BishopW.png" />
+    <Resource Include="Assets\Board.jpg" />
     <Resource Include="Assets\Board.png" />
+    <Resource Include="Assets\Board1.png" />
+    <Resource Include="Assets\Board2.jpg" />
+    <Resource Include="Assets\Board3.jpg" />
     <Resource Include="Assets\Icon.png" />
     <Resource Include="Assets\KingB.png" />
     <Resource Include="Assets\KingW.png" />

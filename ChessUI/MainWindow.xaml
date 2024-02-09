@@ -16,7 +16,7 @@
               MouseDown="BoardGrid_MouseDown">
             
             <Grid.Background>
-                <ImageBrush ImageSource="Assets/Board.png"/>
+                <ImageBrush ImageSource="Assets/Board1.png"/>
             </Grid.Background>
 
             <UniformGrid x:Name="HighlightGrid"
@@ -31,7 +31,7 @@
                          RenderOptions.BitmapScalingMode="HighQuality">
             </UniformGrid>
 
-
+            <ContentControl x:Name="MenuContainer"/>
         </Grid>
     </Viewbox>
 </Window>

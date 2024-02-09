@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessLogic", "ChessLogic\ChessLogic.csproj", "{7B7FEEAB-813D-438F-940B-712E40CDE366}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessLogic", "ChessLogic\ChessLogic.csproj", "{7B7FEEAB-813D-438F-940B-712E40CDE366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessUI", "ChessUI\ChessUI.csproj", "{33BFC7CF-7ED5-42B1-9BB7-47791AF541CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessUI", "ChessUI\ChessUI.csproj", "{33BFC7CF-7ED5-42B1-9BB7-47791AF541CA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7B7FEEAB-813D-438F-940B-712E40CDE366} = {7B7FEEAB-813D-438F-940B-712E40CDE366}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FontTest", "FontTest\FontTest.csproj", "{5DAC04D2-9B7C-4BE2-AC58-403191678FAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{33BFC7CF-7ED5-42B1-9BB7-47791AF541CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33BFC7CF-7ED5-42B1-9BB7-47791AF541CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33BFC7CF-7ED5-42B1-9BB7-47791AF541CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DAC04D2-9B7C-4BE2-AC58-403191678FAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DAC04D2-9B7C-4BE2-AC58-403191678FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DAC04D2-9B7C-4BE2-AC58-403191678FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DAC04D2-9B7C-4BE2-AC58-403191678FAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

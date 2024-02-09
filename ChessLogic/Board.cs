@@ -61,7 +61,7 @@
             return this[pos] == null;
         }
 
-        private IEnumerable<Position> PiecePositions(Player player)
+        public IEnumerable<Position> PiecePositions(Player player)
         {
             for (int r = 0; r < 8; r++)
             {

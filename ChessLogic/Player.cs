@@ -9,7 +9,7 @@
 
     public static class PlayerUtility
     {
-        public static Player Opponent(Player player)
+        public static Player Opponent(this Player player)
         {
             switch(player)
             {
