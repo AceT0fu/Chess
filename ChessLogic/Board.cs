@@ -31,7 +31,7 @@
             this[0, 2] = new Bishop(Player.White);
             this[0, 3] = new Queen(Player.White);
             this[0, 4] = new King(Player.White);
-            this[0, 5] = new Bishop(Player.White);
+            //this[0, 5] = new Bishop(Player.White);
             this[0, 6] = new Knight(Player.White);
             this[0, 7] = new Rook(Player.White);
 

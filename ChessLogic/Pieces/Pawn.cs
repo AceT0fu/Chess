@@ -1,4 +1,6 @@
-﻿namespace ChessLogic
+﻿using ChessLogic.Moves;
+
+namespace ChessLogic
 {
     public class Pawn : Piece
     {
@@ -27,13 +29,14 @@
             Position oneForward = from + forward;
             if (this.CanMoveTo(oneForward, board))
             {
-                yield return new NormalMove(from, oneForward);
+                foreach (Move move in CheckPromotionMoves(from, oneForward))
+                {
+                    yield return move;
+                }
 
                 Position twoForward = oneForward + forward;
                 if (!this.hasMoved && this.CanMoveTo(twoForward, board))
-                {
                     yield return new NormalMove(from, twoForward);
-                }
             }
 
             /* check pawn capture */
@@ -41,11 +44,28 @@
             {
                 if (Board.IsInside(to) && !board.IsEmpty(to) && board[to].colour != this.colour)
                 {
-                    yield return new NormalMove(from, to);
+                    foreach(Move move in CheckPromotionMoves(from, to))
+                    {
+                        yield return move;
+                    }
                 }
             }
 
             // TODO: en passant and promotion
+        }
+
+        private static IEnumerable<Move> CheckPromotionMoves(Position from, Position to)
+        {
+            if (to.row == 0 || to.row == 7)
+            {
+                yield return new PawnPromotion(from, to, PieceType.Knight);
+                yield return new PawnPromotion(from, to, PieceType.Bishop);
+                yield return new PawnPromotion(from, to, PieceType.Rook);
+                yield return new PawnPromotion(from, to, PieceType.Queen);
+            } else
+            {
+                yield return new NormalMove(from, to);
+            }
         }
     }
 }

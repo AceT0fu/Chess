@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ChessLogic;
+using ChessLogic.Moves;
 
 namespace ChessUI
 {
@@ -103,7 +104,14 @@ namespace ChessUI
         {
             /* click on a valid move */
             if (moveCache.Keys.Contains(pos))
-                HandleMove(moveCache[pos]);
+            {
+                Move move = moveCache[pos];
+                if (move.type == MoveType.PawnPromotion)
+                    HandlePromotion(move.fromPos, move.toPos);
+                
+                else
+                    HandleMove(move);
+            }
 
             ClearHighlights();
 
@@ -121,6 +129,23 @@ namespace ChessUI
 
             if (gameState.IsGameOver())
                 ShowGameOver();
+        }
+
+        private void HandlePromotion(Position from, Position to)
+        {
+            pieceImages[to.row, to.col].Source = Images.GetImage(gameState.turn, PieceType.Pawn);
+            pieceImages[from.row, from.col].Source = null;
+
+            PawnPromotionMenu promotionMenu = new PawnPromotionMenu(gameState.turn);
+            MenuContainer.Content = promotionMenu;
+
+            promotionMenu.promotionPiece += type =>
+            {
+                MenuContainer.Content = null;
+                Move promotionMove = new PawnPromotion(from, to, type);
+                HandleMove(promotionMove);
+            };
+
         }
 
         private Position ToSquarePosition(Point point)

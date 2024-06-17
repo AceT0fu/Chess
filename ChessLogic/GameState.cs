@@ -31,7 +31,14 @@ namespace ChessLogic
             IEnumerable<Move> feasibleMoves = board[pos].GetMoves(pos, board);
             IEnumerable<Move> legalMoves = feasibleMoves.Where(move => move.IsLegal(board));
 
-            return legalMoves;
+            IEnumerable<Move> castleMoves = Enumerable.Empty<Move>();
+
+            if (board[pos].type == PieceType.King)
+            {
+                castleMoves = CheckCastleMoves(pos);
+            }
+
+            return legalMoves.Concat(castleMoves);
         }
 
         private void CreateLegalMoveCache()
@@ -94,6 +101,59 @@ namespace ChessLogic
             // TODO if 2 pieces exist and can move to the same square
 
             return str;
+        }
+
+        private IEnumerable<Move> CheckCastleMoves(Position kingPos)
+        {
+            Piece king = board[kingPos];
+            if (king.hasMoved) yield break;
+
+            Position[] rookPositions = new Position[] { new Position(kingPos.row, 0), new Position(kingPos.row, 7) };
+
+            foreach(Position rookPos in rookPositions)
+            {
+                if (board[rookPos].type != PieceType.Rook || board[rookPos].hasMoved)
+                    continue;
+
+                bool canCastle = true;
+                IEnumerable<Position> positionsBetween = GetPositionsBetweenCastling(kingPos, rookPos);
+
+                foreach(Position pos in positionsBetween)
+                {
+                    if (board.IsEmpty(pos) || board[pos].type == PieceType.King)
+                    {
+                        Move kingMove = new NormalMove(kingPos, pos);
+                        if (!kingMove.IsLegal(board))
+                        {
+                            canCastle = false;
+                            break;
+                        }
+                    } else
+                    {
+                        canCastle = false;
+                        break;
+                    }
+                }
+                if (canCastle)
+                {
+                    Direction dir = rookPos.col > kingPos.col ? Direction.right : Direction.left;
+                    yield return new CastleMove(kingPos, kingPos + 2 * dir, kingPos, rookPos);
+                }
+            }
+        }
+
+        private IEnumerable<Position> GetPositionsBetweenCastling(Position kingPos, Position rookPos)
+        {
+            if (kingPos.row != rookPos.row)
+                throw new Exception("wtf homie?");
+
+            Direction dir = rookPos.col > kingPos.col ? Direction.right : Direction.left;
+
+            while (kingPos != rookPos)
+            {
+                yield return kingPos;
+                kingPos += dir;
+            }
         }
     }
 }
