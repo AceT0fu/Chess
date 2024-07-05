@@ -10,6 +10,7 @@ namespace ChessLogic
 
         private Dictionary<Position, IEnumerable<Move>> pieceMovesCache = new Dictionary<Position, IEnumerable<Move>>();
         private bool canMove = false;
+        private Position? enPassantPos = null;
 
         public List<string> moves { get; } = new List<string>(); 
 
@@ -31,14 +32,17 @@ namespace ChessLogic
             IEnumerable<Move> feasibleMoves = board[pos].GetMoves(pos, board);
             IEnumerable<Move> legalMoves = feasibleMoves.Where(move => move.IsLegal(board));
 
-            IEnumerable<Move> castleMoves = Enumerable.Empty<Move>();
+            IEnumerable<Move> extraMoves = Enumerable.Empty<Move>();
 
             if (board[pos].type == PieceType.King)
             {
-                castleMoves = CheckCastleMoves(pos);
+                extraMoves = CheckCastleMoves(pos);
+            } else if (enPassantPos != null && board[pos].type == PieceType.Pawn)
+            {
+
             }
 
-            return legalMoves.Concat(castleMoves);
+            return legalMoves.Concat(extraMoves);
         }
 
         private void CreateLegalMoveCache()
@@ -66,6 +70,9 @@ namespace ChessLogic
         {
             move.Execute(board);
             turn = turn.Opponent();
+
+            if (move.type == MoveType.DoublePawn) board.enPassant = move.toPos;
+            else board.enPassant = null;
 
             CreateLegalMoveCache();
             CheckGameOver();

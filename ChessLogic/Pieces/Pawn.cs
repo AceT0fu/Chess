@@ -36,7 +36,7 @@ namespace ChessLogic
 
                 Position twoForward = oneForward + forward;
                 if (!this.hasMoved && this.CanMoveTo(twoForward, board))
-                    yield return new NormalMove(from, twoForward);
+                    yield return new DoublePawnMove(from, twoForward);
             }
 
             /* check pawn capture */
@@ -51,8 +51,25 @@ namespace ChessLogic
                 }
             }
 
+            if (board.enPassant != null)
+            {
+                Position enPassantPos = board.enPassant;
+
+                if ((from + Direction.left == enPassantPos || from + Direction.right == enPassantPos) && board.IsEmpty(enPassantPos + forward))
+                {
+                    yield return new EnPassantMove(from, enPassantPos + forward, enPassantPos);
+                }
+            }
+
             // TODO: en passant and promotion
         }
+
+        //public Move CheckEnPassant(Position from, Position enPassantPos)
+        //{
+            
+
+        //    yield break;
+        //}
 
         private static IEnumerable<Move> CheckPromotionMoves(Position from, Position to)
         {

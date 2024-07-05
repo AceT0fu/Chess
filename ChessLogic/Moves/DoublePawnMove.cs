@@ -1,17 +1,15 @@
 ﻿namespace ChessLogic
 {
-    public class EnPassantMove : Move
+    public class DoublePawnMove : Move
     {
-        public override MoveType type => MoveType.EnPassant;
+        public override MoveType type => MoveType.DoublePawn;
         public override Position fromPos { get; }
         public override Position toPos { get; }
-        public Position enPassantPos { get; }
 
-        public EnPassantMove(Position fromPos, Position toPos, Position enPassantPos)
+        public DoublePawnMove(Position fromPos, Position toPos)
         {
             this.fromPos = fromPos;
             this.toPos = toPos;
-            this.enPassantPos = enPassantPos;
         }
 
         public override void Execute(Board board)
@@ -20,7 +18,6 @@
             board[toPos] = piece;
             board[fromPos] = null;
             piece.hasMoved = true;
-            board[enPassantPos] = null;
         }
     }
 }

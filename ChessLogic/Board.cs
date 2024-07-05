@@ -3,6 +3,7 @@
     public class Board
     {
         private readonly Piece[,] pieces = new Piece[8, 8];
+        public Position? enPassant { get; set; } = null;
 
         public Piece this[int row, int col]
         {
